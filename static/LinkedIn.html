@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", afterLoad);
+        const dessert = {
+            type: 'IceCream'            
+        };
+        const third = new dessert();
+        const second = dessert;
+        second.type = 'Fruit';
+
+        function afterLoad() {
+            document.getElementById('clas').value = dessert.type;
+            document.getElementById('second').value = second.type;
+            document.getElementById('third').value = third.type;
+        }
+
+    </script>
+
+    <div>
+        <input id="clas"  />
+        <input id="second" readonly="readonly" />
+        <input id="third" readonly="readonly" />  
+        <input id="second" readonly="readonly" />
+
+    </div>
+</body>
+</html>

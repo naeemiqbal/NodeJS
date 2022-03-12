@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Tic Tac Toe Version 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+        <style>
+            p { text-align: center}
+            body{ align-content: center; font-family:  sans-serif;}
+            .grid { border: 3px; align-content:  center;   background-color: black;   
+                    margin-left: auto;                    margin-right: auto;                    margin-bottom: auto;                    margin-top: auto;
+            }
+            .cell1, td { min-width: 100px; min-height: 100px; 
+                         font-size:  xx-large;                         text-align: center;                          vertical-align:  bottom;
+                         background-color:  beige}
+            .nowin,#error {color: red ; }
+            .winner { color: darkgreen; }
+        </style>
+        <script>
+            var rows = 2, plr1, plr2, p1turn, board = [], playerFld, error,
+                    EMPTY = " ", gameStart = false;
+            $(document).ready(function () {
+                playerFld = $("#player");
+            });
+
+            function init() {
+                rows = $("input[name=rows]").val();
+                drawBoard();
+                setStyle();
+                plr1 = $("input[name=player1]").val();
+                plr2 = $("input[name=player2]").val();
+                $("form").hide();
+                p1turn = true;
+                $("table#grid td").click(played);
+                let  i;
+                board = [];
+                error = $("#error");
+                for (i = 0; i < rows; i++) {
+                    let x, row = [];
+                    for (x = 0; x < rows; x++)
+                        row.push(EMPTY);
+                    board.push(row);
+                }
+                playerFld.text("Turn: " + plr1);
+                console.log(board.join("\n"));
+                gameStart = true;
+            }
+
+            function drawBoard() {
+                var brd = $("#board"), x, y, tbl, cid;
+                tbl = "<table id='grid' class='grid'>";
+                for (y = 0; y < rows; y++) {
+                    tbl += "<tr>"
+                    for (x = 0; x < rows; x++) {
+                        cid = "id='" + x + "y" + y + "' xid='" + x + "' yid='" + y + "'";
+                        tbl += "<td " + cid + " ><div class='cell1' > </div></td>"
+                    }
+                    tbl += "</tr>";
+                }
+                brd.innerHTML = tbl;
+                brd.append(tbl);
+            }
+            ;
+
+            function setStyle() {
+                var h = window.innerHeight,
+                        w = window.innerWidth,
+                        least = h > w ? w : h,
+                        i = $('iframe'),
+                        ih = i.innerHeight,
+                        iw=i.innerWidth,
+                        boxSize = least / rows;
+                if (i)
+                    lease =  ih > iw ? iw : ih;
+                if (boxSize < 100) {
+                    let cls = $('.cell1'),
+                            att = boxSize * .9 + "px";
+                    cls.css("min-width", att);
+                    cls.css("min-height", att);
+                }
+            }
+
+            function played(evnt) {
+                var itm = evnt.currentTarget,
+                        x = itm.attributes.xid.value,
+                        y = itm.attributes.yid.value;
+                if (!gameStart)
+                    return;
+                if (board[y][x] === EMPTY) {
+                    error.hide();
+                    if (p1turn) {
+                        p1turn = false;
+                        board[y][x] = 'X';
+                        itm.firstChild.innerText = "X";
+                        playerFld.text("Turn: " + plr2);
+                    } else {
+                        p1turn = true;
+                        board[y][x] = 'O';
+                        itm.firstChild.innerText = "O";
+                        playerFld.text("Turn: " + plr1);
+                    }
+                    console.log(board.join("\n"));
+                    let winner = anyOneWon();
+                    if (winner !== EMPTY)
+                        declareWinner(winner);
+                } else
+                {
+                    error.show();
+                }
+            }
+
+            function anyOneWon() {
+                var x, y, player, winner;
+                player = board[0][0]; //diagnol                
+                if (player !== EMPTY) {
+                    winner = true;
+                    for (x = 0; x < rows; x++) {
+                        if (board[x][x] !== player) {
+                            winner = false;
+                            break;
+                        }
+                    }
+                    if (winner)
+                        return player;
+                }
+                y = rows - 1;
+                player = board[y][0]; // reverse diagnol                
+                if (player !== EMPTY) {
+                    winner = true;
+                    for (x = 0; x < rows; x++) {
+                        if (board[y--][x] !== player) {
+                            winner = false;
+                            break;
+                        }
+                    }
+                    if (winner)
+                        return player;
+                }
+                for (y = 0; y < rows; y++) {
+                    player = board[y][0]; // rows
+                    if (player !== EMPTY) {
+                        winner = true;
+                        for (x = 0; x < rows; x++) {
+                            if (board[y][x] !== player) {
+                                winner = false;
+                                break;
+                            }
+                        }
+                        if (winner)
+                            return player;
+                    }
+                }
+                for (x = 0; x < rows; x++) {
+                    player = board[0][x]; // rows
+                    if (player !== EMPTY) {
+                        winner = true;
+                        for (y = 0; y < rows; y++) {
+                            if (board[y][x] !== player) {
+                                winner = false;
+                                break;
+                            }
+                        }
+                        if (winner)
+                            return player;
+                    }
+                }
+                let rest = board.filter(row => row.filter(cell => cell === EMPTY).length > 0);
+                if (rest.length === 0) {
+                    gameStart = false;
+                    playerFld.text("Game Over!!!");
+                    playerFld.toggleClass("nowin");
+                }
+                console.log(rest);
+                return  EMPTY;
+            }
+            
+            function declareWinner(plyr) {
+                if (plyr === 'X')
+                    playerFld.text("Winner: " + plr1);
+                else
+                    playerFld.text("Winner: " + plr2);
+                gameStart = false;
+                playerFld.addClass("winner");
+            }
+        </script>            
+    </head>
+    <body>
+        <form >
+            <table>
+                <tr><td>Player 1</td><td><input type="text" name="player1" value="Yusra"/></td></tr>
+                <tr><td>Player 2 </td><td><input type="text" name="player2" value="Yasir"/></td></tr>
+                <tr><td>Rows</td><td><input type="number" name="rows" value='3' min="2" max="15"/></td></tr>
+                <tr><td></td><td><input type="button" onclick="init();" value="Play"/></td></tr>
+            </table>
+        </form>            
+        <div id="board" >
+            <h1 id="player"></h1>            
+        </div>
+        <h1 id="error" hidden="hidden" >Invalid move, Try again!</h1>
+    </body>
+</html>

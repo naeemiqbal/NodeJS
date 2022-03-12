@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <style>
+        .text {
+            width: 800px;
+            height: 800px;
+            background-color: aquamarine;
+            border-width: 5px;
+            border: solid;
+            border-width: thick;
+            align-content: center;
+        }
+
+        .tab {
+            width: 200px;
+            height: 25px;
+            background-color: antiquewhite;
+            border: dotted;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", afterLoad);
+
+        function afterLoad() {
+            //   document.getElementsByTagName("div[class=tab]").addEventListener("click", changeTab);
+            //  document.getElementsByClassName("tab").addEventListener("click", changeTab);
+            document.get.getElementById("engTab").addEventListener("click", changeTab);
+        }
+
+        function changeTab(evt) {
+            var itm = evt.currentTarget;
+            console.log("nmi " + itm.id);
+            itm.hidden = true;
+            document.getElementsByTagName("div[class=text]").hidden = true;
+        }
+    </script>
+
+    <div class="tab">
+        <div id="engTab" class="tab">English</div><div id="arTab">Arabic</div><div id="urTab">Urdu</div>
+    </div>
+    <div class="text">
+        <div id="engText" class="text">English Text</div>
+        <div id="arText" class="text">Arabic Text</div>
+        <div id="urText" class="text">Urdu Text</div>
+    </div>
+</body>
+</html>
