@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const hostname = '127.0.0.1';
-const port = 7878;
+const port = 80;
 const static = "./static";
 const server = http.createServer((req, res) => {
     console.log(req.url);
