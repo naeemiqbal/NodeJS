@@ -18,7 +18,7 @@ and open the template in the editor.
             function ajaxCall() {
                 var sts = $("#rstatus").val(), txt = $("#rtext").val();
                 $.ajax({
-                    url: "http://usgvnniqbal02.infor.com:7878/response?oResp=" + sts + "&oText=" + txt
+                    url: "http://localhost:7878/response?oResp=" + sts + "&oText=" + txt
                 })
                         .done(function (resp, statusText) {
                             $("#player").innerHTML = "<p>" + (resp + "  " + statusText);
